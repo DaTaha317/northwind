@@ -5,9 +5,15 @@ const useProductStore = create((set) => ({
   products: [],
   getProducts: async () => {
     try {
+      const filter = client
+        .newFilter()
+        .property("ShipName")
+        .eq("Berglunds snabbköp");
       const result = await client.newRequest({
-        collection: "Products"
+        collection: "Invoices",
+        params: client.newParam().filter(filter)
       });
+
       console.log("result", result.value);
       set({ products: result.value });
     } catch (error) {
